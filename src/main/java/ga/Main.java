@@ -1,9 +1,11 @@
+package ga;
+
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException{
-        //MyFitnessFunction.generateRandomFile("matrix.txt", 256);
+        //ga.MyFitnessFunction.generateRandomFile("matrix.txt", 256);
         MyFitnessFunction ff = new MyFitnessFunction("matrix.txt");
         GeneticEngine ge = new GeneticEngine(ff);
         ge.setIndividualCount(10);

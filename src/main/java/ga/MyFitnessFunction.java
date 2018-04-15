@@ -1,3 +1,5 @@
+package ga;
+
 import java.io.*;
 import java.util.Random;
 import java.util.Scanner;

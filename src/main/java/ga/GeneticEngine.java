@@ -1,3 +1,5 @@
+package ga;
+
 import java.util.Random;
 
 public class GeneticEngine{
@@ -63,7 +65,7 @@ public class GeneticEngine{
 		this.mutationPercent = genomLength * (1 - Math.pow((1 - 10 * Math.pow((1 / 2), (genomLength - 1))),(1 / genomLength)));
 	}
 
-	// Main loop
+	// ga.Main loop
 	public long[] run() {
 		//Preparing structuress
 		this.genomListParents = new long[this.individualCount][];
