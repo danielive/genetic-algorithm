@@ -1,50 +1,43 @@
-import com.sun.javafx.fxml.expression.BinaryExpression;
-import com.sun.xml.internal.ws.policy.spi.PolicyAssertionValidator;
-import io.jenetics.BitChromosome;
-import io.jenetics.BitGene;
-import io.jenetics.Genotype;
-import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
-import io.jenetics.util.Factory;
-import oracle.jrockit.jfr.events.Bits;
+import java.io.IOException;
 
-/**
- * @author Daniel Chuev
- *
- * Instance - sin(x)/(1+exp(-x)) where x = [0.5, 10]
- */
 public class Main {
-    private static double max = 10;
-    private static double min = 0.5;
-    private static int threshold = 10;
-    private static int grid = 15;
 
-    private static double calculateExpression(double x) {
-        System.out.println("x:          " + x);
+    public static void main(String[] args) throws IOException{
+        //MyFitnessFunction.generateRandomFile("matrix.txt", 256);
+        MyFitnessFunction ff = new MyFitnessFunction("matrix.txt");
+        GeneticEngine ge = new GeneticEngine(ff);
+        ge.setIndividualCount(10);
+        ge.setGenerationCount(100);
+        ge.setSelectionType(GeneticEngine.SelectionType.TOURNEY);
+        ge.setCrossingType(GeneticEngine.CrossingType.ELEMENTWISE_RECOMBINATION);
+        ge.setUseMutation(true);
+        ge.setMutationPercent(0.02d);
 
-        return (Math.sin(x)) / (1+Math.exp(-x));
+        long time = System.currentTimeMillis();
+        long[] better = ge.run();
+
+        long timeToFF = ge.timeToFF;
+        long timeToSelection = ge.timeToSelection;
+        long timeToCrossing = ge.timeToCrossing;
+        long timeToMutate = ge.timeToMutate;
+
+        System.out.println("Running:\t"+(System.currentTimeMillis()-time)/1000 + " secs");
+        System.out.println("FitnessFunc:\t"+timeToFF/1000 + " secs");
+        System.out.println(" - FF Prepare:\t"+ff.prepareTime/1000 + " secs");
+        System.out.println(" - FF QSort:\t"+ff.sortingTime/1000 + " secs");
+        System.out.println(" - FF Check: \t"+ff.checkTime/1000 + " secs");
+        System.out.println("Selection:\t"+(timeToSelection-timeToFF)/1000 + " secs");
+        System.out.println("Crossing:\t"+timeToCrossing/1000 + " secs");
+        System.out.println("Mutate: \t"+timeToMutate/1000 + " secs");
+        System.out.println(Long.MAX_VALUE-ff.run(better));
     }
 
-    private static String execute() {
-        double expression = calculateExpression((Math.random() * (max-min)) + min);
-
-        System.out.println("phenotype:  " + expression);
-        System.out.println("chromosome: " + (Long.toBinaryString(Double.doubleToRawLongBits(expression)).substring(0, grid)) + "\n");
-        return Long.toBinaryString(Double.doubleToRawLongBits(expression)).substring(0, grid);
-    }
-
-    // 2.) Definition of the fitness function.
-    private static int eval(Genotype<BitGene> gt) {
-        return gt.getChromosome()
-                .as(BitChromosome.class)
-                .bitCount();
-    }
-
-    public static void main(String[] args) {
-
-        for (int i = 0; i < threshold; i++) {
-            System.out.println("generation: " + (i+1));
-            execute();
+    private static void printLongInBin(long l, int last){
+        if (last>0){
+            int p = (int)(l & 1);
+            printLongInBin(l>>1,--last);
+            System.out.print(p);
         }
     }
+
 }

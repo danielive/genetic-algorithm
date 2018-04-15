@@ -10,7 +10,4 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    // https://mvnrepository.com/artifact/io.jenetics/jenetics
-    compile group: 'io.jenetics', name: 'jenetics', version: '4.1.0'
 }
