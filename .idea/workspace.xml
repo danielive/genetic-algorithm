@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38c8e625-a4f6-45c7-9657-b6154d9a2482" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/bs2rv.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/crtbp.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/ga.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/mutate.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/ranking.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/recombin.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/reins.m" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/matlab/optimization of multidimensional functions/select.m" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ga/MyFitnessFunction.java" afterPath="$PROJECT_DIR$/src/main/java/ga/MyFitnessFunction.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -36,8 +27,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="119">
-                <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <first_editor relative-caret-position="136">
+                <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -536,6 +527,24 @@
               <option name="myItemId" value="matlab" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="simple genetic algorithm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="genetic-algorithm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="genetic-algorithm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="matlab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -998,7 +1007,7 @@
       <workItem from="1523132063684" duration="15391000" />
       <workItem from="1523802518086" duration="1606000" />
       <workItem from="1523821450730" duration="6529000" />
-      <workItem from="1525188432688" duration="1692000" />
+      <workItem from="1525188432688" duration="2248000" />
     </task>
     <task id="LOCAL-00001" summary="init func">
       <created>1523300671640</created>
@@ -1084,11 +1093,18 @@
       <option name="project" value="LOCAL" />
       <updated>1524071393410</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="update matlab">
+      <created>1525190189552</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1525190189552</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25218000" />
+    <option name="totallyTimeSpent" value="25774000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -1398,8 +1414,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="119">
-            <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <first_editor relative-caret-position="136">
+            <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
