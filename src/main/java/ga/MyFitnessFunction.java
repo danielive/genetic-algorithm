@@ -17,7 +17,6 @@ public class MyFitnessFunction implements FitnessFunction {
 	private int vertexCount;
 	private int[][] matrix;
 	
-	
 	public MyFitnessFunction(String filename) throws FileNotFoundException{
 		super();
 		Scanner in = new Scanner(new FileReader(filename));
