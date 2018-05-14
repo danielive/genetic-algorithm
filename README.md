@@ -1,5 +1,8 @@
 # Genetic algorithm
 
+- Solving the task of the traveling salesman
+<img src="https://pp.userapi.com/c846220/v846220636/51d6e/sIKk9KIXZDE.jpg"/>
+
 - In folder `matlab\simple genetic algorithm` located a simple genetic algorithm to find the maximum of the function `sin(x)/(1+exp(-x))`, where x belongs `[0.5, 10]`.
 ##### Result - genetic_algorithm.m
 <img src="https://camo.githubusercontent.com/f53ea26cdc36a417a8fc03731e0bd399f6be7b62/68747470733a2f2f70702e757365726170692e636f6d2f633834353231392f763834353231393838342f33663932392f524f556b4854664e654f382e6a7067"/>
@@ -16,4 +19,3 @@
 
 ##### Result via optimization tool - fun.m
 <img src="https://camo.githubusercontent.com/dccda5e0ecfadbfa95960cb457272d16eb65006e/68747470733a2f2f70702e757365726170692e636f6d2f633833303430392f763833303430393636322f66343639342f5a496e385f704b4d7945302e6a7067"/>
-
