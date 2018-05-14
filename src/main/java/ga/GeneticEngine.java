@@ -4,20 +4,20 @@ import java.util.Random;
 
 public class GeneticEngine{
 
-	public long timeToSelection = 0;
-	public long timeToCrossing = 0;
-	public long timeToMutate = 0;
-	public long timeToFF = 0;
+	long timeToSelection = 0;
+	long timeToCrossing = 0;
+	long timeToMutate = 0;
+	long timeToFF = 0;
 
-	public static final double CHANCE_TO_FULLNESS = 0.999d;
-	public static final SelectionType DEFAULT_SELECTION_TYPE = SelectionType.TOURNEY;
-	public static final CrossingType DEFAULT_CROSSING_TYPE = CrossingType.ONE_POINT_RECOMBINATION;
-	public static final boolean DEFAULT_USE_MUTATION = true;
-	public static final long DEFAULT_GENERATION_COUNT = 10000L;
+	private static final double CHANCE_TO_FULLNESS = 0.999d;
+	private static final SelectionType DEFAULT_SELECTION_TYPE = SelectionType.TOURNEY;
+	private static final CrossingType DEFAULT_CROSSING_TYPE = CrossingType.ONE_POINT_RECOMBINATION;
+	private static final boolean DEFAULT_USE_MUTATION = true;
+	private static final long DEFAULT_GENERATION_COUNT = 10000L;
 
-	public static final int OCTET_LENGTH = 64; // for long
-	public static final int MASK_FOR_MOD = OCTET_LENGTH - 1;
-	public static final int SHIFT_FOR_DIVISION;
+	private static final int OCTET_LENGTH = 64; // Количество битов в лонге
+	private static final int MASK_FOR_MOD = OCTET_LENGTH - 1; // Вместо "x%64" я использую "x & MASK_FOR_MOD"
+	private static final int SHIFT_FOR_DIVISION; // Вместо "x/64" - "x >> SHIFT_FOR_DIVISION"
 	static {
 		int shiftForDivision = 0;
 		int tmp = OCTET_LENGTH;
@@ -37,16 +37,16 @@ public class GeneticEngine{
 	}
 
 	private FitnessFunction fitnessFunction;
-	private int genomLength;
 	private int sizeOfArray;
-	private long generationCount;
-	private int individualCount;
-	private SelectionType selectionType;
-	private CrossingType crossingType;
-	private boolean useMutation;
-	private double mutationPercent;
-	private long[][] genomListParents;
-	private long[][] genomListOffsprings;
+	private int genomLength; // Длина генома в битах
+	private long generationCount; // Количество поколений
+	private int individualCount; // Количество Геномов(Индивидов,Особей) в поколении
+	private SelectionType selectionType; // Тип Селекции
+	private CrossingType crossingType; // Тип Скрещивания
+	private boolean useMutation; // Использовать мутацю
+	private double mutationPercent; // Как часто происходит мутация
+	private long[][] genomListParents; // Список родителей
+	private long[][] genomListOffsprings; // Список потомков
 	private long[] actual;
 	private long[] fitnessFunctionResult;
 	private long currentGeneration = 0;
@@ -68,8 +68,8 @@ public class GeneticEngine{
 	// ga.Main loop
 	public long[] run() {
 		//Preparing structuress
-		this.genomListParents = new long[this.individualCount][];
-		this.genomListOffsprings = new long[this.individualCount][];
+		this.genomListParents = new long[this.individualCount][]; // Список родителей
+		this.genomListOffsprings = new long[this.individualCount][]; // Список потомков
 		this.fitnessFunctionResult = new long[this.individualCount];
 		this.actual = new long[this.individualCount];
 		for (int i = 0; i < this.individualCount; i++) {
@@ -78,7 +78,7 @@ public class GeneticEngine{
 		
 		//Generate 1st generation
 		this.generateFirstGeneration();
-		
+
 		while (this.currentGeneration < this.generationCount) {
 
 			this.selection();
@@ -108,6 +108,7 @@ public class GeneticEngine{
 	}
 
 	// Generate First Generation
+	// Рандомом генерируем лонги, из лонгов составляем геномы и кладем их в массив.
 	private void generateFirstGeneration() {
 		for (int i = 0; i < this.individualCount; i++) {
 			this.genomListParents[i] = this.generateGenom();
@@ -124,6 +125,7 @@ public class GeneticEngine{
 	}
 	
 	// Selection - Select genoms for crossing
+	// Процедура селекции создает новый массив Геномов
 	private void selection(){
 		long old = System.currentTimeMillis(); // time
 		
@@ -201,84 +203,87 @@ public class GeneticEngine{
 	}
 
 	// Cross - Crossing 2 genom
+	// Функция для скрещивания двух геномов
 	private void cross(long[] genom1, long[] genom2) {
 		switch (crossingType) {
-		case ONE_POINT_RECOMBINATION:{
-			int index = this.random.nextInt(this.genomLength);
-			int outerOffset = index >> SHIFT_FOR_DIVISION;
-			int innerOffset = OCTET_LENGTH - (index & MASK_FOR_MOD);
-			long tmp = 0;
+			// Одноточечная рекомбинация
+			case ONE_POINT_RECOMBINATION:{
+				int index = this.random.nextInt(this.genomLength);
+				int outerOffset = index >> SHIFT_FOR_DIVISION;
+				int innerOffset = OCTET_LENGTH - (index & MASK_FOR_MOD);
+				long tmp = 0;
 
-			if (innerOffset < 63) {
-				long mask = 1L << (innerOffset + 1) - 1;
-				long swapMask =  (genom1[outerOffset] ^ genom2[outerOffset]) & mask;
-				genom1[outerOffset] ^= swapMask;
-				genom2[outerOffset] ^= swapMask;
-				outerOffset++;
+				if (innerOffset < 63) {
+					long mask = 1L << (innerOffset + 1) - 1;
+					long swapMask =  (genom1[outerOffset] ^ genom2[outerOffset]) & mask;
+					genom1[outerOffset] ^= swapMask;
+					genom2[outerOffset] ^= swapMask;
+					outerOffset++;
+				}
+				for (int i=outerOffset;i<this.sizeOfArray;i++){
+					tmp = genom1[i];
+					genom1[i] = genom2[i];
+					genom2[i] = tmp;
+				}
+				break;
 			}
-			for (int i=outerOffset;i<this.sizeOfArray;i++){
-				tmp = genom1[i];
-				genom1[i] = genom2[i];
-				genom2[i] = tmp;
-			}
-			
-			break;
-		}
-		case TWO_POINT_RECOMBINATION:{
-			int index1 = this.random.nextInt(this.genomLength);
-			int index2 = this.random.nextInt(this.genomLength);
-			int startIndex = Math.min(index1, index2);
-			int endIndex = Math.max(index1, index2);
-			int startOuterOffset = startIndex >> SHIFT_FOR_DIVISION;
-			int startInnerOffset = OCTET_LENGTH - (startIndex & MASK_FOR_MOD);
-			int endOuterOffset = endIndex >> SHIFT_FOR_DIVISION;
-			int endInnerOffset = OCTET_LENGTH - (endIndex & MASK_FOR_MOD);
-			long tmp = 0;
+			// Двуточечная рекомбинация.
+			case TWO_POINT_RECOMBINATION:{
+				int index1 = this.random.nextInt(this.genomLength);
+				int index2 = this.random.nextInt(this.genomLength);
+				int startIndex = Math.min(index1, index2);
+				int endIndex = Math.max(index1, index2);
+				int startOuterOffset = startIndex >> SHIFT_FOR_DIVISION;
+				int startInnerOffset = OCTET_LENGTH - (startIndex & MASK_FOR_MOD);
+				int endOuterOffset = endIndex >> SHIFT_FOR_DIVISION;
+				int endInnerOffset = OCTET_LENGTH - (endIndex & MASK_FOR_MOD);
+				long tmp = 0;
 
-			if (startInnerOffset < OCTET_LENGTH-1) {
-				long mask = 1L << (startInnerOffset + 1) - 1;
-				long swapMask =  (genom1[startOuterOffset] ^ genom2[startOuterOffset]) & mask;
-				genom1[startOuterOffset] ^= swapMask;
-				genom2[startOuterOffset] ^= swapMask;
-				startOuterOffset++;
+				if (startInnerOffset < OCTET_LENGTH-1) {
+					long mask = 1L << (startInnerOffset + 1) - 1;
+					long swapMask =  (genom1[startOuterOffset] ^ genom2[startOuterOffset]) & mask;
+					genom1[startOuterOffset] ^= swapMask;
+					genom2[startOuterOffset] ^= swapMask;
+					startOuterOffset++;
+				}
+				for (int i=startOuterOffset;i<=endOuterOffset;i++){
+					tmp = genom1[i];
+					genom1[i] = genom2[i];
+					genom2[i] = tmp;
+				}
+				if (endInnerOffset > 0) {
+					long mask = 1L << endInnerOffset - 1;
+					long swapMask =  (genom1[endOuterOffset] ^ genom2[endOuterOffset]) & mask;
+					genom1[endOuterOffset] ^= swapMask;
+					genom2[endOuterOffset] ^= swapMask;
+				}
+
+				break;
 			}
-			for (int i=startOuterOffset;i<=endOuterOffset;i++){
-				tmp = genom1[i];
-				genom1[i] = genom2[i];
-				genom2[i] = tmp;
+			// Поэлементное скрещивание
+			case ELEMENTWISE_RECOMBINATION:{
+				for (int outerOffset = 0; outerOffset < this.sizeOfArray; outerOffset++) {
+					long mask = this.random.nextLong();
+					// swapMask = (a xor b) and mask
+					long swapMask = (genom1[outerOffset] ^ genom2[outerOffset]) & mask;// Добавление and меняет a и b на 0, если они равны 1
+					genom1[outerOffset] ^= swapMask; // a = a xor swapMask
+					genom2[outerOffset] ^= swapMask; // b = b xor swapMask
+				}
+				break;
 			}
-			if (endInnerOffset > 0) {
-				long mask = 1L << endInnerOffset - 1;
-				long swapMask =  (genom1[endOuterOffset] ^ genom2[endOuterOffset]) & mask;
-				genom1[endOuterOffset] ^= swapMask;
-				genom2[endOuterOffset] ^= swapMask;
-			}
-			
-			break;
-		}
-		case ELEMENTWISE_RECOMBINATION:{
-			for (int outerOffset = 0; outerOffset < this.sizeOfArray; outerOffset++) {
-				long mask = this.random.nextLong();
+			// Обмен одним геном
+			case ONE_ELEMENT_EXCHANGE:{
+				int index = this.random.nextInt(this.genomLength);
+				int outerOffset = index >> SHIFT_FOR_DIVISION;
+				int innerOffset = OCTET_LENGTH - (index & MASK_FOR_MOD);
+				long mask = 1L << innerOffset;
 				long swapMask = (genom1[outerOffset] ^ genom2[outerOffset]) & mask;
 
 				genom1[outerOffset] ^= swapMask;
 				genom2[outerOffset] ^= swapMask;
+				break;
 			}
-			break;
-		}
-		case ONE_ELEMENT_EXCHANGE:{
-			int index = this.random.nextInt(this.genomLength);
-			int outerOffset = index >> SHIFT_FOR_DIVISION;
-			int innerOffset = OCTET_LENGTH - (index & MASK_FOR_MOD);
-			long mask = 1L << innerOffset;
-			long swapMask = (genom1[outerOffset] ^ genom2[outerOffset]) & mask;
-
-			genom1[outerOffset] ^= swapMask;
-			genom2[outerOffset] ^= swapMask;
-			break;
-		}
-		default:
-			throw new UnsupportedOperationException();
+			default: throw new UnsupportedOperationException();
 		}
 	}
 
@@ -296,10 +301,12 @@ public class GeneticEngine{
 	}
 
 	// Mutate - Mutate 1 genom
+	// Чтобы инвертировать любой бит в числе необходимо сдвинуть единицу на нужную позицию
 	private void mutate(long[] genom) {
 		int index = this.random.nextInt(this.genomLength);
 		int outerOffset = index >> SHIFT_FOR_DIVISION;
 		int innerOffset = (index & MASK_FOR_MOD);
+		// bit = bit xor 1;
 		long mask = 1L << innerOffset;
 		genom[outerOffset] ^= mask;
 	}

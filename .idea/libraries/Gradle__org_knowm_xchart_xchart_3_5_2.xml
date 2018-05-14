@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.knowm.xchart:xchart:3.5.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.knowm.xchart/xchart/3.5.2/86afe335a28a992aba42f80b6b46d88eaf30b504/xchart-3.5.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.knowm.xchart/xchart/3.5.2/b9ad5a6edba3d65a21f91c4a737d1c6d40c6c204/xchart-3.5.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

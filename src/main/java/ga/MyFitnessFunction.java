@@ -6,18 +6,24 @@ import java.util.Scanner;
 
 public class MyFitnessFunction implements FitnessFunction {
 
-	public long prepareTime = 0;
-	public long checkTime = 0;
-	public long sortingTime = 0;
+	long prepareTime = 0;
+	long checkTime = 0;
+	long sortingTime = 0;
 	
 	private static final int BIT_TO_INT = 8;
 	private int pathLength = 0;
+
 	private int[] path = null;
+
+	int[] getSeq() {
+		return seq;
+	}
+
 	private int[] seq = null;
 	private int vertexCount;
 	private int[][] matrix;
 	
-	public MyFitnessFunction(String filename) throws FileNotFoundException{
+	MyFitnessFunction(String filename) throws FileNotFoundException{
 		super();
 		Scanner in = new Scanner(new FileReader(filename));
 		this.vertexCount = in.nextInt();
@@ -32,21 +38,23 @@ public class MyFitnessFunction implements FitnessFunction {
 		this.path = new int[this.pathLength];
 		this.seq = new int[this.pathLength];
 	}
-	
+
+	// Количество битов в геноме
 	@Override
 	public int getArity() {
 		return this.pathLength*BIT_TO_INT;
 	}
 
+	// Фитнесс Функция
 	@Override
 	public long run(long[] genom) {
 
 		long old = System.currentTimeMillis(); //time
 		
-		int offset=0;
-		int vertexNumber=0;
-		int index = 0;
-		long tmp = 0;
+		int offset;
+		int vertexNumber;
+		int index;
+		long tmp;
 				
 		for (int i=0;i<this.pathLength/BIT_TO_INT;i++){
 			offset = i<<3;
@@ -59,23 +67,34 @@ public class MyFitnessFunction implements FitnessFunction {
 				tmp >>= 8;
 			}
 		}
-		
+
+		// for uneven of size
+		offset = 3<<3;
+		tmp = genom[3];
+		for (int j=0;j<=4;j++){
+			vertexNumber = (int)(tmp & 255);
+			index = offset+j;
+			this.path[index] = vertexNumber;
+			this.seq[index] = index;
+			tmp >>= 8;
+		}
+
 		this.prepareTime += (System.currentTimeMillis()-old); //time
 		old = System.currentTimeMillis(); //time
-		
+
 		qsort(this.path,this.seq,0,this.pathLength-1);
-		
+
 		this.sortingTime += (System.currentTimeMillis()-old); //time
 		old = System.currentTimeMillis(); //time
-		
+
 		long pathLength = this.checkPath(this.seq);
-		
+
 		this.checkTime += (System.currentTimeMillis()-old); //time
-		
+
 		return (Long.MAX_VALUE-pathLength);
 	}
 	
-	private void qsort(int[] arrayToSort, int[] arrayToMix,int l, int r){
+	private void qsort(int[] arrayToSort, int[] arrayToMix, int l, int r){
 		int i = l;
 		int j = r;
 		int tmp = 0;
@@ -110,13 +129,13 @@ public class MyFitnessFunction implements FitnessFunction {
 		int pathLength = path.length;
 		int predVertex = path[0];
 		int nextVertex = 0;
-		
+
 		for (int i=1;i<pathLength;i++){
 			nextVertex = path[i];
-			result += this.matrix[predVertex][nextVertex];			
+			result += this.matrix[predVertex][nextVertex];
 			predVertex = nextVertex;
 		}
-		
+
 		return result;
 	}
 	

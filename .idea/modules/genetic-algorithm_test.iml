@@ -10,6 +10,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="genetic-algorithm_main" />
+    <orderEntry type="library" name="Gradle: org.knowm.xchart:xchart:3.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: de.erichseifert.vectorgraphics2d:VectorGraphics2D:0.13" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="genetic-algorithm_main" />
 </module>
